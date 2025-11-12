@@ -4,55 +4,128 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>BULD</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap");
-    </style>
-
     <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon" />
-
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
+    </style>
     <style>
       :root {
-        --border: 5px;
-        --text: #111;
-        --bar-h: 80px;
-        --gap: 16px;
-        --pad: clamp(10px, 3vw, 24px);
-        --tap: 44px;
+        --bar-h: 80px; /* bottom bar height */
+        --gap: clamp(12px, 3vw, 28px); /* gap between columns */
+        --pad: clamp(14px, 3vw, 28px); /* inner padding */
+        --tap: 44px; /* touch target min size */
       }
+
       * {
         box-sizing: border-box;
         margin: 0;
-        padding: 0;
       }
       html,
       body {
         height: 100%;
-        background: #000;
-        color: var(--text);
-        font-family: "Funnel Display", sans-serif;
+        background: #000; /* black bg */
+        color: #fff;
+        font-family: "Space Grotesk", sans-serif;
         overflow: hidden; /* no scroll */
       }
 
-      /* Image section */
-      .image-section {
+      /* ====== MAIN LAYOUT AREA (above the bottom bar) ====== */
+      .stage {
         position: fixed;
-        top: 50px; /* 50px from top */
+        top: 0;
         left: 0;
         right: 0;
-        height: 70vh; /* around 70% height */
+        bottom: var(--bar-h); /* reserve space for bottom bar */
+        padding: var(--pad);
+        display: grid;
+        grid-template-columns: 0.3fr 0.7fr; /* 30% / 70% */
+        gap: var(--gap);
+        align-items: center;
+      }
+
+      /* LEFT COLUMN (text) */
+      .left {
+        height: 100%;
         display: flex;
+        flex-direction: column;
+        justify-content: center; /* fill the height with text blocks */
+        gap: 30px;
+        padding: clamp(10px, 2vw, 20px);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 12px;
+        backdrop-filter: blur(4px);
+      }
+      .block {
+        /* three vertical blocks to balance space */
+        display: grid;
+        align-content: start;
+        gap: clamp(8px, 1.4vw, 14px);
+      }
+      .title {
+        font-size: clamp(24px, 4.5vw, 44px);
+        line-height: 1.05;
+        letter-spacing: 0.5px;
+      }
+      .desc {
+        font-size: clamp(12px, 1.6vw, 18px);
+        color: #d8d8d8;
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .btn {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #000;
+        height: var(--tap);
+        padding: 0 16px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        text-decoration: none;
+        transition: transform 0.18s ease, background 0.18s ease;
+        -webkit-tap-highlight-color: transparent;
       }
-      .image-section img {
+      .btn:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .mini {
+        font-size: clamp(12px, 1.4vw, 16px);
+        color: #bdbdbd;
+        opacity: 0.9;
+      }
+
+      /* RIGHT COLUMN (image) — full image visible, no crop */
+      .right {
+        height: 100%;
+        display: grid;
+        place-items: center;
+        padding: clamp(6px, 1.5vw, 14px);
+        border-radius: 12px;
+        background: #000;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .art {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* show entire image */
+        display: grid;
+        place-items: center;
+      }
+      .art img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* show entire image within the 70% column */
         display: block;
       }
 
-      /* Bottom white bar */
+      /* ====== BOTTOM BAR (white) ====== */
       .bottom-bar {
         position: fixed;
         left: 0;
@@ -62,21 +135,20 @@
         background: #fff;
         color: #000;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
         padding: 0 var(--pad);
-        border-top: var(--border) solid #000;
+        border-top: 5px solid #000;
       }
-
       .ca {
         font-size: clamp(12px, 2vw, 18px);
         letter-spacing: 0.5px;
+        white-space: nowrap;
       }
-
       .socials {
         display: flex;
         align-items: center;
-        gap: var(--gap);
+        gap: 14px;
       }
       .icon-btn {
         width: var(--tap);
@@ -84,7 +156,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        /* border-radius: 8px; */
+        border-radius: 8px;
         background: #000;
         color: #fff;
         text-decoration: none;
@@ -92,7 +164,7 @@
       }
       .icon-btn:hover {
         transform: translateY(-2px);
-        opacity: 0.8;
+        opacity: 0.85;
       }
       .icon {
         width: 22px;
@@ -100,109 +172,26 @@
         fill: currentColor;
       }
 
-      .top-right {
-        position: fixed;
-        top: 16px;
-        right: 16px;
-        z-index: 5;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 44px;
-        padding: 0 16px;
-        /* border-radius: 10px; */
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
-        text-decoration: none;
-        -webkit-tap-highlight-color: transparent;
-        transition: transform 0.18s ease, background 0.18s ease,
-          opacity 0.18s ease;
-      }
-      .btn:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.16);
-      }
-      .btn:active {
-        transform: none;
-      }
-      @media (max-width: 520px) {
-        .top-right {
-          top: 12px;
-          right: 12px;
+      /* ====== RESPONSIVE ====== */
+      @media (max-width: 980px) {
+        .stage {
+          grid-template-columns: 1fr; /* stack on tablets/phones */
+          grid-template-rows: 0.52fr 0.48fr; /* text block + image block */
         }
-        .btn {
-          height: 40px;
-          padding: 0 14px;
+        .left {
+          order: 1;
+        }
+        .right {
+          order: 2;
         }
       }
-
-      /* Marquee white bar */
-      .marquee-bar {
-        position: fixed;
-        bottom: 85px;
-        left: 0;
-        right: 0;
-        height: 60px;
-        background: #fff;
-        color: #000;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        border-top: 4px solid #000;
-      }
-
-      /* Inner content that moves */
-      .marquee-content {
-        display: inline-block;
-        white-space: nowrap;
-        padding-left: 100%;
-        animation: marquee 18s linear infinite;
-        font-family: "Anton", sans-serif;
-        font-size: clamp(14px, 2vw, 20px);
-      }
-
-      .tag {
-        background: red;
-        color: #fff;
-        padding: 4px 10px;
-        margin-right: 16px;
-        border-radius: 4px;
-      }
-
-      @keyframes marquee {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-100%);
-        }
-      }
-
-      /* Optional hover pause */
-      .marquee-bar:hover .marquee-content {
-        animation-play-state: paused;
-      }
-
       @media (max-width: 480px) {
-        .marquee-bar {
-          height: 50px;
-        }
-        .marquee-content {
-          font-size: 14px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .image-section {
-          top: 40px;
-          height: 65vh;
+        :root {
+          --bar-h: 70px;
         }
         .icon-btn {
-          width: 38px;
-          height: 38px;
+          width: 40px;
+          height: 40px;
         }
         .icon {
           width: 20px;
@@ -212,29 +201,46 @@
     </style>
   </head>
   <body>
-    <!-- <div class="top-right">
-      <a class="btn" href="builder.html">Are you a builder?</a>
-    </div> -->
+    <!-- MAIN: two columns -->
+    <section class="stage" aria-label="Main">
+      <!-- Left: 30% column (text fills height) -->
+      <div class="left">
+        <div class="block">
+          <h1 class="title">
+            <span style="color: red; padding: 15px 0">BREAKING NEWS: </span>
+            <br />
+            BNB CHAIN has once again chosen TO BULD instead of build
+          </h1>
+          <p class="desc">Are you a BULDER?</p>
+        </div>
 
-    <div class="image-section">
-      <!-- Replace with your image -->
-      <img src="./buld.jpeg" alt="Poster" />
-    </div>
+        <div class="block">
+          <div class="cta-row">
+            <a class="btn" href="#">BUY $BULD</a>
+            <a class="btn" href="#">DEXSCREENER</a>
+          </div>
+        </div>
 
-    <div class="marquee-bar">
-      <div class="marquee-content" id="marquee">
-        <span class="tag">BREAKING NEWS:</span>
-        <span class="text">
-          BNB CHAIN has once again chosen TO BULD instead of build — Are you a
-          BULDER?
-        </span>
+        <!-- <div class="block">
+          <p class="mini">
+            High performance • Clean UI • Mobile-first • Next.js-ready
+          </p>
+        </div> -->
       </div>
-    </div>
 
-    <div class="bottom-bar">
+      <!-- Right: 70% column (full image, no crop) -->
+      <div class="right" aria-hidden="false">
+        <div class="art">
+          <!-- Replace with your image -->
+          <img src="./buld.jpeg" alt="Showcase" />
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM BAR: CA + socials -->
+    <div class="bottom-bar" role="contentinfo">
       <div class="ca">CA : 0xbB80ceE6feFAA9C95d1Eb8DB53869C86D0744444</div>
-      <div class="socials">
-        <!-- Telegram -->
+      <div class="socials" aria-label="Social links">
         <a
           class="icon-btn"
           href="https://t.me/Buld_onbnb"
@@ -247,7 +253,6 @@
             />
           </svg>
         </a>
-        <!-- X -->
         <a
           class="icon-btn"
           href="https://x.com/BNBCHAIN/status/1988426545023905812?s=20"
@@ -262,16 +267,5 @@
         </a>
       </div>
     </div>
-
-    <!-- js -->
-    <script>
-      // Basic JS to restart animation if text changes dynamically later
-      const marquee = document.getElementById("marquee");
-      marquee.addEventListener("animationiteration", () => {
-        marquee.style.animation = "none";
-        void marquee.offsetWidth; // trigger reflow
-        marquee.style.animation = null;
-      });
-    </script>
   </body>
 </html>
