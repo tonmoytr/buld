@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Builder</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap");
+    </style>
+    <style>
+      :root {
+        --bar-h: 120px; /* bottom text zone height */
+        --gap: 16px;
+        --pad: clamp(10px, 3vw, 24px);
+        --tap: 44px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        color: #fff;
+        font-family: "Funnel Display", sans-serif;
+      }
+
+      /* Top-right nav button */
+      .top-right {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 5;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--tap);
+        padding: 0 16px;
+        /* border-radius: 7px; */
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.18s ease, background 0.18s ease,
+          opacity 0.18s ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .btn:active {
+        transform: none;
+      }
+
+      /* Image block: 70% height, full width, 50px from top */
+      .image-section {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 50px;
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+      }
+      .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* Bottom text zone (white bar variant for this page’s message) */
+      .bottom-news {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--bar-h);
+        background: #fff;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 var(--pad);
+        text-align: center;
+        border-top: 5px solid #000;
+      }
+      .headline {
+        font-size: clamp(16px, 2.6vw, 28px);
+        line-height: 1.2;
+      }
+      .sub {
+        display: block;
+        font-size: clamp(14px, 2vw, 20px);
+        margin-top: 6px;
+      }
+
+      @media (max-width: 520px) {
+        .top-right {
+          top: 12px;
+          right: 12px;
+        }
+        .btn {
+          height: 40px;
+          padding: 0 14px;
+        }
+        :root {
+          --bar-h: 110px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top-right “Home” button -->
+    <div class="top-right">
+      <a class="btn" href="index.html">Home</a>
+    </div>
+
+    <!-- Same image, same position -->
+    <div class="image-section">
+      <!-- Replace with your image -->
+      <img src="./build.jpg" alt="Poster" />
+    </div>
+
+    <!-- Bottom message bar -->
+    <div class="bottom-news" role="contentinfo" aria-label="Breaking news">
+      <div>
+        <span class="headline"
+          ><span style="color: red; font-weight: 600;">BREAKING NEWS:</span> BNB CHAIN has once
+          again chosen TO BULD instead of build</span
+        >
+        <span class="sub">Are you a BULDER?</span>
+      </div>
+    </div>
+  </body>
+</html>

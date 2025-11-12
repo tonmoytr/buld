@@ -4,12 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>BULD</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
-      rel="stylesheet"
-    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap");
+    </style>
 
-    <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon">
+    <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon" />
 
     <style>
       :root {
@@ -30,7 +29,7 @@
         height: 100%;
         background: #000;
         color: var(--text);
-        font-family: "Anton", sans-serif;
+        font-family: "Funnel Display", sans-serif;
         overflow: hidden; /* no scroll */
       }
 
@@ -85,7 +84,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
+        /* border-radius: 8px; */
         background: #000;
         color: #fff;
         text-decoration: none;
@@ -99,6 +98,45 @@
         width: 22px;
         height: 22px;
         fill: currentColor;
+      }
+
+      .top-right {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 5;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 44px;
+        padding: 0 16px;
+        /* border-radius: 10px; */
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.18s ease, background 0.18s ease,
+          opacity 0.18s ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .btn:active {
+        transform: none;
+      }
+      @media (max-width: 520px) {
+        .top-right {
+          top: 12px;
+          right: 12px;
+        }
+        .btn {
+          height: 40px;
+          padding: 0 14px;
+        }
       }
 
       @media (max-width: 480px) {
@@ -118,6 +156,10 @@
     </style>
   </head>
   <body>
+    <div class="top-right">
+      <a class="btn" href="builder.html">Are you a builder?</a>
+    </div>
+
     <div class="image-section">
       <!-- Replace with your image -->
       <img src="./buld.jpeg" alt="Poster" />
