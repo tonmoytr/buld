@@ -39,7 +39,7 @@
         top: 50px; /* 50px from top */
         left: 0;
         right: 0;
-        height: 80vh; /* around 70% height */
+        height: 70vh; /* around 70% height */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -139,6 +139,62 @@
         }
       }
 
+      /* Marquee white bar */
+      .marquee-bar {
+        position: fixed;
+        bottom: 85px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: #fff;
+        color: #000;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        border-top: 4px solid #000;
+      }
+
+      /* Inner content that moves */
+      .marquee-content {
+        display: inline-block;
+        white-space: nowrap;
+        padding-left: 100%;
+        animation: marquee 18s linear infinite;
+        font-family: "Anton", sans-serif;
+        font-size: clamp(14px, 2vw, 20px);
+      }
+
+      .tag {
+        background: red;
+        color: #fff;
+        padding: 4px 10px;
+        margin-right: 16px;
+        border-radius: 4px;
+      }
+
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* Optional hover pause */
+      .marquee-bar:hover .marquee-content {
+        animation-play-state: paused;
+      }
+
+      @media (max-width: 480px) {
+        .marquee-bar {
+          height: 50px;
+        }
+        .marquee-content {
+          font-size: 14px;
+        }
+      }
+
       @media (max-width: 480px) {
         .image-section {
           top: 40px;
@@ -156,13 +212,23 @@
     </style>
   </head>
   <body>
-    <div class="top-right">
+    <!-- <div class="top-right">
       <a class="btn" href="builder.html">Are you a builder?</a>
-    </div>
+    </div> -->
 
     <div class="image-section">
       <!-- Replace with your image -->
       <img src="./buld.jpeg" alt="Poster" />
+    </div>
+
+    <div class="marquee-bar">
+      <div class="marquee-content" id="marquee">
+        <span class="tag">BREAKING NEWS:</span>
+        <span class="text">
+          BNB CHAIN has once again chosen TO BULD instead of build — Are you a
+          BULDER?
+        </span>
+      </div>
     </div>
 
     <div class="bottom-bar">
@@ -196,5 +262,16 @@
         </a>
       </div>
     </div>
+
+    <!-- js -->
+    <script>
+      // Basic JS to restart animation if text changes dynamically later
+      const marquee = document.getElementById("marquee");
+      marquee.addEventListener("animationiteration", () => {
+        marquee.style.animation = "none";
+        void marquee.offsetWidth; // trigger reflow
+        marquee.style.animation = null;
+      });
+    </script>
   </body>
 </html>
