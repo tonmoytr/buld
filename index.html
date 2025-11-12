@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon" />
     <!-- Google Font: Noto Sans -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
@@ -18,10 +18,10 @@
         --overlay: rgba(0, 0, 0, 0.925);
         --text: #f5f7fb;
         --muted: #cdd3df;
-        --primary: #3b82f6;
-        --primary-hover: #2563eb;
+        --primary: #eb4325;
+        --primary-hover: #ebcd25;
         --outline: rgba(255, 255, 255, 0.2);
-        --radius: 14px;
+        --radius: 9px;
         --gap: clamp(32px, 6vw, 84px); /* wider gap between columns */
         --container: min(1120px, 92vw);
         --pad-x: 14px; /* padding for each left item */
@@ -33,6 +33,7 @@
       * {
         box-sizing: border-box;
       }
+
       html,
       body {
         height: 100%;
@@ -43,6 +44,8 @@
         background: ;
         overflow: hidden; /* no scroll */
       }
+
+      
 
       .hero {
         position: relative;
@@ -331,9 +334,9 @@
 
       <section class="wrap" aria-label="Hero">
         <div class="left">
-          <h1 style="color: red;">$BULD</h1>
+          <h1 style="color: red">$BULD</h1>
 
-          <p style="color: ;">
+          <p style="color: ">
             BNB Chain continues to BUIDL, pushing boundaries in scalability,
             security, and user empowerment. With each upgrade, it strengthens
             its position as a hub for decentralized innovation.
@@ -343,21 +346,19 @@
             <a class="btn primary" href="buylink" aria-label="Get started"
               >Buy Now</a
             >
-            <a class="btn" href="chartlink" aria-label="Learn more"
-              >Dextools</a
-            >
+            <a class="btn" href="chartlink" aria-label="Learn more">Dextools</a>
           </div>
 
           <div class="copy-wrap">
             <div class="copy-row">
-              <label style="color: ;" for="addr">Contract:</label>
+              <label style="color: " for="addr">Contract:</label>
               <input
                 id="addr"
                 class="copy-input"
                 type="text"
                 readonly
                 value="0x000000000000000000"
-                style="color: ;"
+                style="color: "
               />
             </div>
             <!-- <div class="hint">
@@ -413,10 +414,7 @@
         </div>
 
         <div class="art" aria-hidden="true">
-          <img
-            src="./buld.jpeg"
-            alt="Showcase image"
-          />
+          <img src="./buld.jpeg" alt="Showcase image" />
         </div>
       </section>
     </main>
