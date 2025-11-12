@@ -2,11 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BULD</title>
 
-    <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon" />
-    <!-- Google Font: Noto Sans -->
+    <link rel="shortcut icon" href="./buld.jpeg" type="image/x-icon">
+
+    <!-- (Optional) Use Anton/Noto; swap or remove if you prefer system fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans:wght@400;600&display=swap"
       rel="stylesheet"
@@ -14,409 +15,186 @@
 
     <style>
       :root {
-        --bg-img: url("./buld.jpeg");
-        --overlay: rgba(0, 0, 0, 0.925);
-        --text: #f5f7fb;
-        --muted: #cdd3df;
-        --primary: #eb4325;
-        --primary-hover: #ebcd25;
-        --outline: rgba(255, 255, 255, 0.2);
-        --radius: 9px;
-        --gap: clamp(32px, 6vw, 84px); /* wider gap between columns */
-        --container: min(1120px, 92vw);
-        --pad-x: 14px; /* padding for each left item */
-        --pad-y: 10px;
-        --anim-time: 720ms;
-        --anim-ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+        --bg: url("./buld.jpeg");
+        --overlay: rgba(0, 0, 0, 0.048);
+        --text: #f6f7fb;
+        --muted: #d5d9e3;
+        --outline: rgba(255, 255, 255, 0.25);
+        --radius: 12px;
+        --pad: clamp(10px, 2.5vw, 20px);
+        --gap: 10px;
+        --tap: 48px; /* min target size */
       }
 
       * {
         box-sizing: border-box;
       }
-
       html,
       body {
         height: 100%;
         margin: 0;
+        overflow: hidden; /* no scroll */
+        color: var(--text);
         font-family: "Noto Sans", system-ui, -apple-system, Segoe UI, Roboto,
           Arial, sans-serif;
-        color: var(--text);
-        background: ;
-        overflow: hidden; /* no scroll */
+        background: #000;
       }
 
-      
-
-      .hero {
-        position: relative;
-        min-height: 100svh;
-        display: grid;
-        place-items: center;
-        isolation: isolate;
-        background: center/cover no-repeat var(--bg-img);
+      /* Fullscreen background layer */
+      .bg {
+        position: fixed;
+        inset: 0;
+        background: center / cover no-repeat var(--bg);
       }
-      .hero::before {
+      .bg::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, var(--overlay), var(--overlay));
-        z-index: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.25),
+            rgba(0, 0, 0, 0.35)
+          ),
+          var(--overlay);
       }
 
-      .wrap {
-        /* background: #FCD535 ; */
-        border-radius: 8px;
-        width: var(--container);
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
+      /* Corner containers */
+      .corner {
+        position: fixed;
+        z-index: 2;
+        padding: calc(var(--pad) + env(safe-area-inset-bottom)) var(--pad);
+        display: flex;
         align-items: center;
         gap: var(--gap);
-        z-index: 1;
-        padding: clamp(16px, 3vw, 28px);
-      }
-
-      /* LEFT */
-      .left > * {
-        /* padding on each element in text column */
-        padding: var(--pad-y) var(--pad-x);
-        border-radius: 10px;
-      }
-      .left h1 {
-        margin: 0 0 2px 0;
-        line-height: 1.08;
-        font-weight: 700;
-        font-size: clamp(28px, 5vw, 52px);
-        letter-spacing: -0.02em;
-        text-wrap: balance;
-        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(2px);
-      }
-      .left p {
-        margin: 0;
-        font-size: clamp(14px, 1.5vw, 18px);
-        color: var(--muted);
-        max-width: 58ch;
-        background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(2px);
       }
 
-      .buttons {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin: 4px 0 0 0;
-        padding-top: calc(var(--pad-y) + 4px);
-        padding-bottom: calc(var(--pad-y) + 6px);
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(2px);
-        border-radius: 10px;
-      }
-      .btn {
-        appearance: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 18px;
-        border-radius: var(--radius);
+      /* Bottom-left: Contract */
+      .bl {
+        left: 0;
+        bottom: 0;
+        padding-left: calc(var(--pad) + env(safe-area-inset-left));
+        background: rgba(0, 0, 0, 0.15);
+        border-top-right-radius: var(--radius);
         border: 1px solid var(--outline);
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 600;
-        transition: transform 0.08s ease, background 0.15s ease,
-          border-color 0.15s ease, box-shadow 0.15s ease;
-        will-change: transform;
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        border-left: none;
+        border-bottom: none;
       }
-      .btn:hover {
-        background: rgba(255, 255, 255, 0.12);
-        transform: translateY(-1px);
-        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.25);
-      }
-      .btn:active {
-        transform: translateY(0);
-      }
-      .btn.primary {
-        background: var(--primary);
-        border-color: transparent;
-      }
-      .btn.primary:hover {
-        background: var(--primary-hover);
-      }
-
-      .copy-wrap {
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(2px);
-        border-radius: 10px;
-      }
-      .copy-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        max-width: 560px;
-      }
-      .copy-row label {
-        font-size: 13px;
+      .label {
         color: var(--muted);
+        opacity: 0.9;
+        margin-right: 6px;
+      }
+      .ca {
+        font-family: "Anton", sans-serif;
+        letter-spacing: 0.5px;
         white-space: nowrap;
-      }
-      .copy-input {
-        flex: 1;
-        height: 44px;
-        border: 1px solid var(--outline);
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--text);
-        padding: 0 14px;
-        outline: none;
-        font-size: 14px;
-      }
-      .copy-input::selection {
-        background: rgba(59, 130, 246, 0.35);
-      }
-      .hint {
-        font-size: 12px;
-        color: var(--muted);
-        opacity: 0.85;
-        padding-top: 6px;
+        user-select: text;
+        -webkit-user-select: text;
       }
 
-      .social {
-        display: flex;
+      /* Bottom-right: Icons */
+      .br {
+        right: 0;
+        bottom: 0;
+        padding-right: calc(var(--pad) + env(safe-area-inset-right));
         gap: 12px;
-        align-items: center;
-        margin-top: 30px;
-        padding-top: 6px;
+        background: rgba(0, 0, 0, 0.15);
+        border-top-left-radius: var(--radius);
+        border: 1px solid var(--outline);
+        border-right: none;
+        border-bottom: none;
       }
       .icon-btn {
+        width: var(--tap);
+        height: var(--tap);
+        min-width: var(--tap);
+        min-height: var(--tap);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 42px;
-        height: 42px;
         border-radius: 10px;
         border: 1px solid var(--outline);
-        background: rgba(255, 255, 255, 0.06);
-        transition: transform 0.12s var(--anim-ease), background 0.15s ease,
-          box-shadow 0.15s ease;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        text-decoration: none;
+        transition: transform 0.18s ease, background 0.18s ease,
+          box-shadow 0.18s ease;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
       }
       .icon-btn:hover {
-        transform: translateY(-2px) scale(1.04);
-        background: rgba(255, 255, 255, 0.12);
-        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
       }
-      .icon-btn svg {
-        width: 20px;
-        height: 20px;
+      .icon-btn:active {
+        transform: translateY(0);
+      }
+      .icon {
+        width: 22px;
+        height: 22px;
         fill: currentColor;
-        color: var(--text);
       }
 
-      /* RIGHT (image) */
-      .art {
-        display: grid;
-        place-items: center;
-        width: 100%;
-      }
-      .art img {
-        width: 100%;
-        max-width: 560px;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
-        border-radius: calc(var(--radius) + 4px);
-        border: 1px solid var(--outline);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-        filter: saturate(1.02) contrast(1.02);
-        transform: translateY(12px) scale(0.985);
-        animation: float-in var(--anim-time) var(--anim-ease) 0.2s both;
-        transition: transform 280ms var(--anim-ease),
-          box-shadow 280ms var(--anim-ease), filter 280ms ease;
-        will-change: transform, box-shadow, filter;
-      }
-      .art img:hover {
-        transform: translateY(-6px) scale(1.02);
-        box-shadow: 0 24px 44px rgba(0, 0, 0, 0.45);
-        filter: saturate(1.06) contrast(1.06);
-      }
-
-      /* Entrance animations (stagger) */
-      .left h1 {
-        animation: fade-up var(--anim-time) var(--anim-ease) 0s both;
-      }
-      .left p {
-        animation: fade-up var(--anim-time) var(--anim-ease) 0.07s both;
-      }
-      .buttons {
-        animation: fade-up var(--anim-time) var(--anim-ease) 0.14s both;
-      }
-      .copy-wrap {
-        animation: fade-up var(--anim-time) var(--anim-ease) 0.21s both;
-      }
-
-      @keyframes fade-up {
-        from {
-          opacity: 0;
-          transform: translateY(14px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes float-in {
-        from {
-          opacity: 0;
-          transform: translateY(30px) scale(0.96);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(12px) scale(0.985);
-        }
-      }
-
-      /* Responsive */
-      @media (max-width: 900px) {
-        .wrap {
-          grid-template-columns: 1fr;
-          gap: clamp(18px, 4vh, 28px);
-        }
-        .art img {
-          max-width: 520px;
-          width: min(92vw, 520px);
-        }
-        .buttons {
-          gap: 10px;
-        }
-      }
-
-      /* Keep everything comfortably inside the viewport on very small screens */
-      @media (max-height: 560px) {
-        .left h1 {
-          font-size: clamp(22px, 5vh, 34px);
-        }
-        .left p {
-          font-size: clamp(12px, 2vh, 14px);
-        }
-        .btn {
-          padding: 10px 14px;
-        }
-        .copy-input {
-          height: 40px;
+      /* Small device tuning */
+      @media (max-width: 480px) {
+        .ca {
+          font-size: 14px;
         }
         .icon-btn {
-          width: 38px;
-          height: 38px;
+          width: 44px;
+          height: 44px;
         }
       }
-
-      .brand {
-        position: absolute;
-        top: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.7);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: 1px solid var(--outline);
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(4px);
+      @media (min-width: 1024px) {
+        .ca {
+          font-size: 18px;
+        }
       }
     </style>
   </head>
   <body>
-    <main class="hero">
-      <div class="brand">$BULD</div>
+    <!-- Background -->
+    <div class="bg" aria-hidden="true"></div>
 
-      <section class="wrap" aria-label="Hero">
-        <div class="left">
-          <h1 style="color: red">$BULD</h1>
+    <!-- Bottom-left: contract -->
+    <div class="corner bl" role="contentinfo">
+      <span class="label">CA :</span>
+      <span class="ca">0x00000000000000000</span>
+    </div>
 
-          <p style="color: ">
-            BNB Chain continues to BUIDL, pushing boundaries in scalability,
-            security, and user empowerment. With each upgrade, it strengthens
-            its position as a hub for decentralized innovation.
-          </p>
+    <!-- Bottom-right: social icons -->
+    <div class="corner br" aria-label="Social links">
+      <!-- Telegram -->
+      <a
+        class="icon-btn"
+        href="https://t.me/your_channel"
+        target="_blank"
+        rel="noopener"
+        aria-label="Telegram"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M9.03 15.39 8.9 18.5c.32 0 .46-.14.63-.31l1.52-1.46 3.16 2.32c.58.32.99.15 1.15-.54l2.08-9.78c.21-.96-.35-1.34-.93-1.11L3.9 10.4c-.94.37-.92.9-.16 1.14l3.78 1.18 8.79-5.55c.41-.27.78-.12.47.15l-7.56 6.07z"
+          />
+        </svg>
+      </a>
 
-          <div class="buttons">
-            <a class="btn primary" href="buylink" aria-label="Get started"
-              >Buy Now</a
-            >
-            <a class="btn" href="chartlink" aria-label="Learn more">Dextools</a>
-          </div>
-
-          <div class="copy-wrap">
-            <div class="copy-row">
-              <label style="color: " for="addr">Contract:</label>
-              <input
-                id="addr"
-                class="copy-input"
-                type="text"
-                readonly
-                value="0x000000000000000000"
-                style="color: "
-              />
-            </div>
-            <!-- <div class="hint">
-              Tip: click the field, then press Ctrl/Cmd + C to copy.
-            </div> -->
-
-            <!-- Social row -->
-            <div class="social" aria-label="Social links">
-              <!-- Telegram -->
-              <a
-                class="icon-btn"
-                href="https://t.me/your_channel"
-                target="_blank"
-                rel="noopener"
-                aria-label="Telegram"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M9.03 15.39 8.9 18.5c.32 0 .46-.14.63-.31l1.52-1.46 3.16 2.32c.58.32.99.15 1.15-.54l2.08-9.78c.21-.96-.35-1.34-.93-1.11L3.9 10.4c-.94.37-.92.9-.16 1.14l3.78 1.18 8.79-5.55c.41-.27.78-.12.47.15l-7.56 6.07z"
-                  />
-                </svg>
-              </a>
-              <!-- X (Twitter) -->
-              <a
-                class="icon-btn"
-                href="https://x.com/your_handle"
-                target="_blank"
-                rel="noopener"
-                aria-label="X (Twitter)"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M13.7 10.6 20.8 3h-1.6l-6.2 6.9L8 3H2l7.5 10.9L2 21h1.6l6.7-7.4L16 21h6l-8.3-10.4Zm-2.4 2.6-.78-1.1L4 4.2h3.2l4 5.6.78 1.1 6.9 9.5h-3.2l-4.4-6.2Z"
-                  />
-                </svg>
-              </a>
-              <!-- Dexscreener -->
-              <a
-                class="icon-btn"
-                href="https://dexscreener.com/"
-                target="_blank"
-                rel="noopener"
-                aria-label="Dexscreener"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M3 3h2v18H3zM7 15h2v6H7zM11 9h2v12h-2zM15 5h2v16h-2zM19 11h2v10h-2z"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="art" aria-hidden="true">
-          <img src="./buld.jpeg" alt="Showcase image" />
-        </div>
-      </section>
-    </main>
+      <!-- X / Twitter -->
+      <a
+        class="icon-btn"
+        href="https://x.com/your_handle"
+        target="_blank"
+        rel="noopener"
+        aria-label="X"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M13.7 10.6 20.8 3h-1.6l-6.2 6.9L8 3H2l7.5 10.9L2 21h1.6l6.7-7.4L16 21h6l-8.3-10.4Zm-2.4 2.6-.78-1.1L4 4.2h3.2l4 5.6.78 1.1 6.9 9.5h-3.2l-4.4-6.2Z"
+          />
+        </svg>
+      </a>
+    </div>
   </body>
 </html>
